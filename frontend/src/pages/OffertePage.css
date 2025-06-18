@@ -1,0 +1,322 @@
+.offerte-page {
+  padding: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.offerte-header {
+  margin-bottom: 30px;
+  width: 100%;
+  text-align: center;
+}
+
+.offerte-header p {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: center;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Aggiunta di stili specifici per il pulsante Filtra */
+.search-container .button {
+  /* Riduce lo spazio interno per avvicinare testo e icona */
+  padding: 12px !important;
+}
+
+.search-container .button-content {
+  /* Assicura che icona e testo siano allineati al centro */
+  justify-content: center;
+  gap: 5px;
+}
+
+/* Stile per il testo nel pulsante Filtra */
+.search-container .button-text {
+  color: #9c9c9c; /* Assicura che il colore sia esattamente lo stesso del placeholder */
+}
+
+/* Regolazione dei margini delle icone nel pulsante Filtra */
+.search-container .button-icon-right {
+  margin: 0; /* Margine a sinistra dell'icona quando è a destra */
+}
+
+.filters-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 35px;
+  background-color: #1e3a8a;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* Modifica il container di ricerca per includere l'indicatore */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.search-container .button-icon-left {
+  margin: 0 8px 0 0; /* Margine a destra dell'icona quando è a sinistra */
+}
+
+/* Stile specifico per l'icona del filtro */
+.search-container .button img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Stili specifici per l'input di ricerca */
+.search-container .input-container {
+  flex: 1;
+}
+
+/* Modifica la posizione e lo stile dell'input */
+.search-container .input-field {
+  padding-left: 15px; /* Aumento il padding sinistro per allineare il testo */
+}
+
+/* Personalizzazione dell'icona di ricerca */
+.search-container .input-icon-left {
+  left: 15px; /* Sposto l'icona più a destra */
+}
+
+.search-container .input-icon img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.6; /* Rende l'icona leggermente trasparente */
+}
+
+/* Personalizzazione del placeholder nell'input di ricerca */
+.search-container .input-field::placeholder {
+  padding-left: 0; /* Rimuovo il padding aggiuntivo dal placeholder */
+  color: #9c9c9c; /* Assicura che il colore sia esattamente lo stesso */
+  opacity: 1; /* Importante per la coerenza tra browser */
+}
+
+.offerte-content {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 220px);
+  width: 100%;
+  justify-content: center;
+  max-width: 1400px;
+}
+
+.offerte-list-container {
+  flex: 0 0 40%;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  max-width: 450px;
+}
+
+.offer-details-container {
+  flex: 0 0 58%;
+  border-radius: 8px;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  font-size: 20px;
+  color: #666;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  gap: 20px;
+}
+
+.error {
+  color: #e53e3e;
+  text-align: center;
+  font-size: 18px;
+  background-color: #fff5f5;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: 1px solid #feb2b2;
+  max-width: 600px;
+}
+
+.refresh-button {
+  position: absolute;
+  right: 20px;
+  top: 0;
+}
+
+.refresh-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.last-updated {
+  font-size: 12px;
+  color: #666;
+  text-align: right;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.no-offer-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #666;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .offerte-content {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .offer-details-container {
+    flex: 1;
+    width: 100%;
+    background-color: none;
+  }
+}
+
+/* Stili per il form di pubblicazione offerta - nuovo layout */
+.form-job-form {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #9dc4e8;
+  border-radius: 8px;
+  border: 1px dashed #666;
+  padding: 0;
+  overflow: hidden;
+}
+
+#job-form {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  width: 100%;
+  padding: 15px;
+  background-color: #b8d4ef;
+}
+
+.form-row.alternate-row {
+  background-color: #9dc4e8;
+}
+
+.form-row.header-row {
+  background-color: #9dc4e8;
+  border-bottom: 1px dashed #8e69c2;
+}
+
+.form-row.alternate-row {
+  border-top: 1px dashed #8e69c2;
+}
+
+.form-field {
+  flex: 1;
+  padding: 0 10px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #b8d4ef;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #b8d4ef;
+}
+
+.form-field.date-field {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.form-field.description-field textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.form-row.button-row {
+  justify-content: center;
+  padding: 20px;
+  border-top: 1px dashed #8e69c2;
+}
+
+.submit-button {
+  background-color: #1e3a8a;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+  background-color: #1c3275;
+}
+
+.submit-button:disabled {
+  background-color: #6c7aa1;
+  cursor: not-allowed;
+}

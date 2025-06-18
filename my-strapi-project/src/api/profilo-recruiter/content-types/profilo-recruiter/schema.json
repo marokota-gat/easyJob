@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "profilo_recruiters",
+  "info": {
+    "singularName": "profilo-recruiter",
+    "pluralName": "profilo-recruiters",
+    "displayName": "ProfiloRecruiter",
+    "description": "Profilo completo del recruiter"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nome": {
+      "type": "string",
+      "required": true
+    },
+    "cognome": {
+      "type": "string",
+      "required": true
+    },
+    "dataNascita": {
+      "type": "date",
+      "required": true
+    },
+    "nomeAzienda": {
+      "type": "string",
+      "required": true
+    },
+    "logoAzienda": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "profiloRecruiter"
+    }
+  }
+} 

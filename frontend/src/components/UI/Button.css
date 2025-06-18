@@ -1,0 +1,47 @@
+.button {
+  transition: all 0.2s ease-in-out;
+  outline: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.button-text {
+  flex: 0 1 auto;
+  text-align: center;
+  padding: 0;
+}
+
+.button-icon-left {
+  margin-right: 6px;
+}
+
+.button-icon-right {
+  margin-left: 6px;
+}

@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'IBM Plex Sans Hebrew', Arial, sans-serif;
+}
+/* LEFT SIDE */
+h1 {
+  margin-left: 6%;
+  margin-top: 10%;
+  margin-bottom: 6%;
+  font-size: 24;
+  font-weight: 500;
+}
+.login-page {
+  background: #f2f2f2;
+  display: flex;
+}
+.leftside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  width: 55%;
+  border-right: 1px solid #bfbfbf;
+}
+.logo {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.img {
+  width: 100%;
+  height: auto;
+  max-width: 800px;
+}
+.description {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-top: auto;
+  width: 100%;
+  height: 18%;
+  background: #d3d1d1;
+}
+.description p {
+  font-size: 26px;
+  margin-left: 6%;
+  margin-top: auto;
+  margin-bottom: auto;
+  justify-content: center;
+  font-weight: 300;
+  color: black;
+}
+.hightlited {
+  font-weight: 600;
+  color: rgb(20, 90, 205);
+}
+
+/* RIGHT SIDE */
+.rightside {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 45%;
+  background-color: white;
+}
+.form-container {
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 450px;
+  width: 80%;
+  height: 65%;
+  max-height: 700px;
+  background: #d3d1d1;
+  border-radius: 20px;
+  border: 1px solid #bfbfbf;
+}
+.lavoro-semplice {
+  position: absolute;
+  top: 3px;
+  right: 10%;
+  width: 150px;
+  height: 150px;
+  max-width: 800px;
+}

@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "profilo_candidatos",
+  "info": {
+    "singularName": "profilo-candidato",
+    "pluralName": "profilo-candidatos",
+    "displayName": "ProfiloCandidato",
+    "description": "Profilo completo del candidato"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nome": {
+      "type": "string",
+      "required": true
+    },
+    "cognome": {
+      "type": "string",
+      "required": true
+    },
+    "dataNascita": {
+      "type": "date",
+      "required": true
+    },
+    "telefono": {
+      "type": "string",
+      "required": true
+    },
+    "immagineProfilo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "cv": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "profiloCandidato"
+    }
+  }
+} 

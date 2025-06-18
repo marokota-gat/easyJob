@@ -1,0 +1,40 @@
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-field {
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Stile per il placeholder */
+.input-field::placeholder {
+  color: #9c9c9c;
+}
+
+/* Stili generali per le icone */
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Posizione delle icone */
+.input-icon-left {
+  left: 10px; /* Regola questa distanza per spostare l'icona a sinistra */
+}
+
+.input-icon-right {
+  right: 15px; /* Regola questa distanza per spostare l'icona a destra */
+}
+
+/* Dimensioni e stile delle icone */
+.input-icon img {
+  width: 18px;
+  height: 18px;
+}

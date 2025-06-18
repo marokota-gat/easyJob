@@ -1,0 +1,67 @@
+.offers-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer e Edge */
+}
+
+.offers-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.no-offers {
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  color: #666;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+  max-width: 850px;
+}
+
+/* Aggiungi questo CSS al tuo file OffersList.css */
+
+.favorites-debug {
+  background-color: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #0c4a6e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.favorites-debug button {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.favorites-debug button:hover {
+  background-color: #dc2626;
+}
+
+/* Stile per indicare che un'offerta è tra i preferiti */
+.offer-card.is-favorite {
+  border-left: 4px solid #f59e0b;
+  background-color: #fffbeb;
+}
+
+.offer-card.is-favorite .favorite-indicator {
+  color: #f59e0b;
+  font-weight: bold;
+}

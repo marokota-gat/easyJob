@@ -1,0 +1,161 @@
+.candidature-page {
+  max-width: 1600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.candidature-title {
+  color: #2d3748;
+  font-size: 32px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.no-candidature {
+  background-color: #f7fafc;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.no-candidature p {
+  color: #4a5568;
+  font-size: 1.1rem;
+}
+
+.candidature-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(350px, 1fr)
+  );
+  gap: 20px;
+  width: 100%;
+}
+.content-card {
+  width: 90%;
+  margin: auto;
+}
+.candidatura-card {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.candidatura-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.candidatura-header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.candidatura-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #2d3748;
+}
+
+.candidatura-status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-sent {
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+}
+
+.status-viewed {
+  background-color: #faf5ff;
+  color: #805ad5;
+}
+
+.status-feedback {
+  background-color: #f0fff4;
+  color: #2f855a;
+}
+
+.status-accepted {
+  background-color: #e6fffa;
+  color: #2c7a7b;
+}
+
+.status-rejected {
+  background-color: #fff5f5;
+  color: #c53030;
+}
+
+.status-evaluating {
+  background-color: #fffaf0;
+  color: #c05621;
+}
+
+.stato-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.candidatura-details {
+  padding: 15px;
+}
+
+.candidatura-details p {
+  margin: 8px 0;
+  color: #4a5568;
+}
+
+.candidatura-details a {
+  color: #4299e1;
+  text-decoration: none;
+}
+
+.candidatura-details a:hover {
+  text-decoration: underline;
+}
+
+.candidatura-feedback {
+  padding: 15px;
+  background-color: #f0fff4;
+  border-top: 1px solid #c6f6d5;
+}
+
+.candidatura-feedback h3 {
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  color: #2f855a;
+}
+
+.candidatura-feedback p {
+  margin: 0;
+  color: #4a5568;
+}
+
+.loading,
+.error {
+  padding: 20px;
+  text-align: center;
+  color: #4a5568;
+  font-size: 1.1rem;
+}
+
+.error {
+  color: #e53e3e;
+}

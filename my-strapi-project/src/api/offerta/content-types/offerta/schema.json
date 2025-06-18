@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "offertas",
+  "info": {
+    "singularName": "offerta",
+    "pluralName": "offertas",
+    "displayName": "Offerta",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "Ruolo": {
+      "type": "string",
+      "required": true
+    },
+    "Azienda": {
+      "type": "string",
+      "required": true
+    },
+    "Luogo": {
+      "type": "string",
+      "required": true
+    },
+    "TipoContratto": {
+      "type": "string",
+      "required": true
+    },
+    "Descrizione": {
+      "type": "richtext",
+      "required": true
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "candidaturas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::candidatura.candidatura",
+      "mappedBy": "offerta"
+    },
+    "pubblicazione": {
+      "type": "date",
+      "required": true
+    },
+    "scadenza": {
+      "type": "date"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@300;400;500;700&display=swap');
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+body::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+body {
+  font-family: 'IBM Plex Sans Hebrew', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE e Edge vecchi */
+  overflow-y: scroll; /* mantieni lo scroll attivo */
+}
+img,
+svg {
+  border: none !important;
+  border-radius: 0px !important;
+}

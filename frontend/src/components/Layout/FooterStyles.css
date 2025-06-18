@@ -1,0 +1,79 @@
+.footer-container {
+  width: 100%;
+  border-top: 1px solid #dcd5d5;
+  height: 100%;
+}
+.footer {
+  width: 90%;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+}
+/* Footer logo */
+.footer-up-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.footer-up-left img {
+  width: 120px;
+  height: 120px;
+}
+.footer-up-left-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 25px;
+}
+.footer-up-left-text h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0px;
+}
+.footer-up-left-text p {
+  font-size: 16px;
+}
+#click {
+  font-weight: 600;
+  text-decoration: none;
+}
+/* Footer Liste */
+a {
+  text-decoration: underline;
+  color: black;
+  font-weight: 400;
+}
+li {
+  list-style: none;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.footer-up-right {
+  width: 50%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-links {
+  display: flex;
+  flex-direction: column;
+}
+/* Footer Down */
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #dcd5d5;
+}
+.footer-down p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+}
+.footer-down p span {
+  font-weight: 600;
+}

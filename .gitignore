@@ -1,0 +1,68 @@
+# Dependencies
+/node_modules
+/frontend/node_modules
+/my-strapi-project/node_modules
+
+# Production
+/frontend/build
+/my-strapi-project/build
+/my-strapi-project/dist
+
+# Config 
+/my-strapi-project/config/database.ts
+
+# Testing
+/frontend/coverage
+/my-strapi-project/coverage
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+.settings/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/my-strapi-project/.env
+/my-strapi-project/.env.local
+/my-strapi-project/.env.development.local
+/my-strapi-project/.env.test.local
+/my-strapi-project/.env.production.local
+
+# Strapi specific
+/my-strapi-project/.cache
+/my-strapi-project/.tmp
+/my-strapi-project/license.txt
+/my-strapi-project/exports
+/my-strapi-project/public/uploads/*
+!/my-strapi-project/public/uploads/.gitkeep
+
+# Misc
+.DS_Store
+Thumbs.db 

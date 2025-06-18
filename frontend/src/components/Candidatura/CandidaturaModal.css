@@ -1,0 +1,129 @@
+.candidatura-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.candidatura-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border: 2px solid #d6dbde;
+}
+
+.candidatura-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.candidatura-modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #2d3748;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #a0aec0;
+  transition: color 0.3s;
+}
+
+.close-button:hover {
+  color: #4a5568;
+}
+
+.candidatura-form {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input[type='file'] {
+  padding: 8px;
+  border: 1px dashed #cbd5e0;
+  background-color: #f7fafc;
+  border-radius: 4px;
+}
+
+.profile-cv-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.profile-cv-option input[type='checkbox'] {
+  margin-right: 8px;
+}
+
+.error-message {
+  color: #e53e3e;
+  margin: 10px 0;
+}
+
+.candidatura-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+#cancel-button {
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: white;
+  border: none;
+  color: #585b60;
+  border: 1px solid #d6dbde;
+  border-radius: 12px;
+  width: 100px;
+}
+#submit-button {
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #1e3a8a;
+  border: none;
+  border: 1px solid #d6dbde;
+  border-radius: 12px;
+  width: 100px;
+  color: white;
+}
+
+#submit-button:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+  border: 1px solid #d6dbde;
+  border-radius: 12px;
+  width: 100px;
+}

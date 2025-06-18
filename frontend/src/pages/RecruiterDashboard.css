@@ -1,0 +1,687 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.dashboard-header #h1 {
+  font-size: 2.5rem;
+  color: #1e3a8a;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.dashboard-content {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pubblica-offerta {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pubblica-offerta h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.job-form {
+  width: 90%;
+  margin: auto;
+  background-color: #f9fafb;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  background-color: #f1f5f9;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  background-color: #e2e8f0;
+}
+
+.tab-button.active {
+  background-color: #1e3a8a;
+  color: white;
+}
+
+/* Form styles */
+.form-row {
+  display: flex;
+  gap: 2rem;
+  background-color: white;
+}
+
+.form-group {
+  flex: 1;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-button {
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #1e40af;
+}
+
+/* Gestione offerte */
+.gestisci-offerte {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.offerte-section,
+.candidature-section {
+  background-color: #f9fafb;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.offerte-section h2,
+.candidature-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #1e3a8a;
+}
+
+.loading,
+.error,
+.no-data {
+  padding: 2rem;
+  text-align: center;
+  background-color: white;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  color: #64748b;
+}
+
+.error {
+  color: #ef4444;
+  background-color: #fee2e2;
+}
+
+.no-data {
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Table styles */
+.offerta-header {
+  display: flex;
+  background-color: #1e3a8a;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+}
+
+.offerta-row {
+  display: flex;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.offerta-row:nth-child(odd) {
+  background-color: #f8fafc;
+}
+
+.offerta-row:hover {
+  background-color: #f1f5f9;
+  cursor: pointer;
+}
+
+/* Rimosso stile candidatura-row:hover */
+
+.offerta-row:last-child {
+  border-bottom: none;
+  border-radius: 0 0 8px 8px;
+}
+
+.offerta-row.selected {
+  background-color: #e0e7ff;
+}
+
+.offerta-cell {
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.delete-button {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-button:hover:not(:disabled) {
+  background-color: #dc2626;
+}
+
+.delete-button:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* Candidatura styles */
+.candidato-email {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.cv-link {
+  color: #1e3a8a;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.cv-link:hover {
+  text-decoration: underline;
+}
+
+.no-cv {
+  color: #64748b;
+  font-style: italic;
+}
+
+.stato {
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+  min-width: 100px;
+}
+
+.stato.inviata {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  border: 1px solid #0284c7;
+}
+
+.stato.in\ valutazione {
+  background-color: #fef3c7;
+  color: #d97706;
+  border: 1px solid #d97706;
+}
+
+.stato.accettata {
+  background-color: #dcfce7;
+  color: #16a34a;
+  border: 1px solid #16a34a;
+}
+
+.stato.rifiutata {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+}
+
+.stato-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.stato-button {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.stato-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stato-button.valutazione {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.stato-button.accettata {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.stato-button.rifiutata {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.feedback-button {
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.feedback-form {
+  margin-top: 0.5rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.feedback-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-height: 80px;
+  resize: vertical;
+}
+
+.feedback-form button {
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.existing-feedback {
+  margin-top: 0.5rem;
+  background-color: #f1f5f9;
+  padding: 0.5rem;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.feedback-label {
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.feedback-text {
+  font-size: 0.875rem;
+}
+
+/* Login styles */
+.login-container {
+  max-width: 400px;
+  margin: 5rem auto;
+  padding: 2rem;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #1e3a8a;
+  text-align: center;
+}
+
+.login-container .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.login-container label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.login-container button {
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.login-container button:hover {
+  background-color: #1e40af;
+}
+
+.login-container .error {
+  color: #ef4444;
+  background-color: #fee2e2;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .offerta-header,
+  .candidatura-header {
+    display: none;
+  }
+
+  .offerta-row,
+  .candidatura-row {
+    flex-direction: column;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  .offerta-cell,
+  .candidatura-cell {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .offerta-cell:last-child,
+  .candidatura-cell:last-child {
+    border-bottom: none;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .stato-buttons {
+    flex-direction: column;
+  }
+}
+
+/* Aggiungi questo stile alla fine del file */
+.missing-data {
+  color: #ff6b6b;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.candidatura-row {
+  padding: 10px 0;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.candidatura-row:hover {
+  background-color: #f5f8ff;
+}
+
+/* Stili per la nuova struttura delle candidature */
+.candidatura-container {
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.candidatura-row-header {
+  display: flex;
+  background-color: #f8fafc;
+  font-weight: 600;
+  font-size: 0.9em;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.candidatura-row-data {
+  display: flex;
+  background-color: white;
+}
+
+.candidatura-feedback-row {
+  background-color: #f8fafc;
+  padding: 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Nascondi l'header principale per dispositivi desktop */
+@media (min-width: 768px) {
+  .candidatura-header {
+    display: none;
+  }
+}
+
+/* Mostra l'header principale solo per dispositivi mobili */
+@media (max-width: 767px) {
+  .candidatura-row-header {
+    display: none;
+  }
+}
+
+/* Stili per il campo dataCandidatura */
+.data-candidatura {
+  font-weight: 500;
+  color: #1e3a8a;
+}
+
+/* Rimuovi tutti gli stili delle candidature che non servono più */
+.candidatura-container,
+.candidatura-row-header,
+.candidatura-row-data,
+.candidatura-feedback-row,
+.candidatura-header,
+.candidatura-row,
+.candidatura-cell,
+.full-width {
+  /* Questi stili non sono più necessari */
+  display: none;
+}
+
+/* Stili per l'intestazione che si estende a tutta la larghezza */
+.offerta-header.full-width {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Stile per l'item della candidatura */
+.candidatura-item {
+  margin-bottom: 1px;
+}
+
+/* Riabilito alcuni stili che erano stati disabilitati */
+.full-width {
+  display: block;
+  width: 100%;
+}
+
+/* Assicurati che le celle dell'intestazione siano allineate con le celle dei dati */
+.offerta-header .offerta-cell {
+  text-align: center;
+}
+
+/* Stili per la tabella delle candidature */
+.candidature-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+/* Intestazione blu a tutta larghezza */
+.tabella-candidature-header {
+  display: flex;
+  background-color: #1e3a8a;
+  color: white;
+  font-weight: 600;
+  padding: 1rem 0;
+  border-radius: 8px 8px 0 0;
+  width: 100%;
+}
+
+.header-cell {
+  flex: 1;
+  text-align: center;
+  padding: 0 10px;
+}
+
+/* Righe di dati */
+.tabella-candidature-row {
+  display: flex;
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  width: 100%;
+}
+
+.tabella-candidature-row:nth-child(odd) {
+  background-color: #f8fafc;
+}
+
+.tabella-candidature-row:last-child {
+  border-bottom: none;
+  border-radius: 0 0 8px 8px;
+}
+
+.tabella-candidature-cell {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Stili per le azioni */
+.tabella-candidature-cell .stato-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Rimuovi gli stili precedenti che non servono più */
+.candidatura-item,
+.offerta-header.full-width {
+  display: none;
+}
+
+.candidatura-id {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}

@@ -1,0 +1,63 @@
+{
+  "kind": "collectionType",
+  "collectionName": "candidaturas",
+  "info": {
+    "singularName": "candidatura",
+    "pluralName": "candidaturas",
+    "displayName": "Candidatura",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "CV": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "offerta": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::offerta.offerta",
+      "inversedBy": "candidaturas"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "recruiter"
+    },
+    "stato": {
+      "type": "enumeration",
+      "enum": [
+        "inviata",
+        "presa_visione",
+        "feedback_disponibile",
+        "in valutazione",
+        "accettata",
+        "rifiutata"
+      ],
+      "default": "inviata",
+      "required": true
+    },
+    "feedback": {
+      "type": "text"
+    },
+    "dataCandidatura": {
+      "type": "date"
+    },
+    "nomeCandidato": {
+      "type": "string"
+    },
+    "cognomeCandidato": {
+      "type": "string"
+    },
+    "emailCandidato": {
+      "type": "email"
+    }
+  }
+}
