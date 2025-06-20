@@ -89,6 +89,112 @@ export default factories.createCoreController('api::profilo-recruiter.profilo-re
     }
   },
 
+  // Override del metodo update per gestire correttamente l'aggiornamento
+  async update(ctx) {
+    try {
+      const { id } = ctx.params;
+      const userId = ctx.state.user.id;
+      
+      console.log('Update Recruiter - Profile ID:', id);
+      console.log('Update Recruiter - User ID from JWT:', userId);
+
+      // Verifica che il profilo appartenga all'utente autenticato
+      const existingProfile = await strapi.entityService.findOne('api::profilo-recruiter.profilo-recruiter', id, {
+        populate: ['user']
+      }) as any;
+
+      if (!existingProfile) {
+        return ctx.notFound('Profilo non trovato');
+      }
+
+      if (existingProfile.user && existingProfile.user.id !== userId) {
+        return ctx.forbidden('Non hai i permessi per modificare questo profilo');
+      }
+
+      // Estrai i dati dal FormData
+      let updateData: any = {};
+      
+      if (ctx.request.body.data) {
+        if (typeof ctx.request.body.data === 'string') {
+          try {
+            updateData = JSON.parse(ctx.request.body.data);
+          } catch (parseError) {
+            console.error('Update Recruiter - Failed to parse data:', parseError);
+            return ctx.badRequest('Invalid JSON data');
+          }
+        } else {
+          updateData = ctx.request.body.data;
+        }
+      }
+
+      // Assicurati che l'utente rimanga collegato
+      updateData.user = userId;
+
+      console.log('Update Recruiter - Update data:', updateData);
+      console.log('Update Recruiter - Files in request:', ctx.request.files ? Object.keys(ctx.request.files) : 'No files');
+
+      // Aggiorna prima i dati del profilo
+      let updatedEntity = await strapi.entityService.update('api::profilo-recruiter.profilo-recruiter', id, {
+        data: updateData,
+        populate: ['user', 'logoAzienda']
+      }) as any;
+
+      // Se ci sono file, gestiscili separatamente
+      if (ctx.request.files && ctx.request.files['files.logoAzienda']) {
+        console.log('Update Recruiter - Processing logo file');
+        
+        try {
+          // Carica il file usando il servizio upload di Strapi
+          const uploadedFiles = await strapi.plugins.upload.services.upload.upload({
+            data: {
+              refId: id,
+              ref: 'api::profilo-recruiter.profilo-recruiter',
+              field: 'logoAzienda'
+            },
+            files: ctx.request.files['files.logoAzienda']
+          });
+
+          console.log('Update Recruiter - File uploaded successfully');
+
+          // Ricarica l'entità per ottenere i dati aggiornati con l'immagine
+          updatedEntity = await strapi.entityService.findOne('api::profilo-recruiter.profilo-recruiter', id, {
+            populate: ['user', 'logoAzienda']
+          }) as any;
+
+        } catch (uploadError) {
+          console.error('Update Recruiter - File upload error:', uploadError);
+          // Continua anche se l'upload fallisce
+        }
+      }
+
+      console.log('Update Recruiter - Final result:', updatedEntity);
+
+      // Formatta la risposta nel formato standard di Strapi
+      const { user, ...attributes } = updatedEntity;
+      
+      return {
+        data: {
+          id: updatedEntity.id,
+          attributes: {
+            ...attributes,
+            user: user ? {
+              data: {
+                id: user.id,
+                attributes: {
+                  ...user,
+                  id: undefined
+                }
+              }
+            } : null
+          }
+        }
+      };
+    } catch (err) {
+      console.error('Error in profilo-recruiter controller (update):', err);
+      return ctx.badRequest(`${err.name}: ${err.message}`);
+    }
+  },
+
   // Override del metodo find per gestire meglio gli errori
   async find(ctx) {
     try {

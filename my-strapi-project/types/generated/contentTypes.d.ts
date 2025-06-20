@@ -631,7 +631,6 @@ export interface ApiProfiloCandidatoProfiloCandidato
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    cv: Schema.Attribute.Media<'files'>;
     dataNascita: Schema.Attribute.Date & Schema.Attribute.Required;
     immagineProfilo: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

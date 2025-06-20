@@ -9,6 +9,7 @@ import RecruiterDashboard from './pages/RecruiterDashboard';
 import CompletaProfiloCandidato from './pages/CompletaProfiloCandidato';
 import CompletaProfiloRecruiter from './pages/CompletaProfiloRecruiter';
 import PubblicaOffertaPage from './pages/PubblicaOffertaPage';
+import ModificaProfilo from './pages/ModificaProfilo';
 import axios from 'axios';
 
 import {
@@ -460,6 +461,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="modifica-profilo"
+            element={
+              <ProtectedRoute>
+                <ModificaProfilo />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         {/* Rimanda alla pagina login se la pagina non esiste */}
@@ -467,6 +476,7 @@ function App() {
           path="*"
           element={<Navigate to="/login" />}
         />
+
       </Routes>
     </BrowserRouter>
   );

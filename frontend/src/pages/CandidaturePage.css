@@ -159,3 +159,101 @@
 .error {
   color: #e53e3e;
 }
+
+/* Sezione CV */
+.cv-section {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.cv-section p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cv-buttons-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cv-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.cv-upload-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background-color: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.cv-upload-button:hover:not(.uploading) {
+  background-color: #3182ce;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cv-upload-button.uploading {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.upload-spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.cv-upload-info {
+  color: #718096;
+  font-size: 0.75rem;
+  font-style: italic;
+  width: 100%;
+}
+
+/* Aggiornamento responsive per dispositivi mobili */
+@media (max-width: 768px) {
+  .cv-section p {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .cv-buttons-container {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .cv-upload-button {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+}

@@ -35,14 +35,6 @@
         "images"
       ]
     },
-    "cv": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "files"
-      ]
-    },
     "user": {
       "type": "relation",
       "relation": "oneToOne",
@@ -50,4 +42,4 @@
       "inversedBy": "profiloCandidato"
     }
   }
-} 
+}

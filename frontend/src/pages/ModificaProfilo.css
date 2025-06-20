@@ -1,0 +1,69 @@
+.modifica-profilo-container {
+  width: 800px;
+  margin-top: 2%;
+  padding: 2rem;
+  background-color: #f9fafb;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modifica-profilo-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+.modifica-profilo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modifica-profilo-input,
+.modifica-profilo-textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.6rem;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.modifica-profilo-input:focus,
+.modifica-profilo-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.modifica-profilo-button {
+  padding: 0.75rem;
+  background-color: #2563eb;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modifica-profilo-button:hover {
+  background-color: #1d4ed8;
+}
+
+.modifica-profilo-delete {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #dc2626;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modifica-profilo-delete:hover {
+  background-color: #b91c1c;
+}

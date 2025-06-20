@@ -6,6 +6,7 @@ export default function CandidaturePage() {
   const [candidature, setCandidature] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [uploadingCv, setUploadingCv] = useState(null); // ID della candidatura in fase di upload
   const jwt = localStorage.getItem('jwt');
 
   useEffect(() => {
@@ -116,6 +117,7 @@ export default function CandidaturePage() {
 
             return {
               id: candidatura.id,
+              documentId: candidatura.documentId,
               offerta: offertaData,
               stato: attrs.stato || 'inviata',
               feedback: attrs.feedback || '',
@@ -145,6 +147,147 @@ export default function CandidaturePage() {
 
     fetchCandidature();
   }, [jwt]);
+
+  // Funzione per gestire l'upload del nuovo CV
+  const handleCvUpload = async (candidaturaId, file) => {
+  try {
+    console.log('=== INIZIO UPLOAD CV ===');
+    console.log('Candidatura ID:', candidaturaId);
+    console.log('File:', file.name, file.type, file.size);
+    
+    setUploadingCv(candidaturaId);
+
+    // Step 1: Upload del file
+    console.log('Step 1: Caricamento file...');
+    const formData = new FormData();
+    formData.append('files', file);
+
+    const uploadResponse = await axios.post(
+      'http://localhost:1337/api/upload',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    console.log('Upload response completa:', uploadResponse);
+    console.log('Upload data:', uploadResponse.data);
+
+    if (uploadResponse.data && uploadResponse.data.length > 0) {
+      const uploadedFile = uploadResponse.data[0];
+      console.log('File caricato:', uploadedFile);
+      console.log('ID del file caricato:', uploadedFile.id);
+
+      // Step 2: Aggiorna la candidatura con il nuovo CV
+      console.log('Step 2: Aggiornamento candidatura...');
+      const updateUrl = `http://localhost:1337/api/candidaturas/${candidaturaId}`;
+      console.log('URL di aggiornamento:', updateUrl);
+      
+      const updateData = {
+        data: {
+          CV: uploadedFile.id,
+        },
+      };
+      console.log('Dati da inviare:', JSON.stringify(updateData, null, 2));
+
+      const updateResponse = await axios.put(
+        updateUrl,
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      console.log('Update response completa:', updateResponse);
+      console.log('Update data:', updateResponse.data);
+
+      // Step 3: Aggiorna lo stato locale
+      setCandidature(prevCandidature =>
+        prevCandidature.map(candidatura =>
+          candidatura.id === candidaturaId
+            ? {
+                ...candidatura,
+                cvUrl: `http://localhost:1337${uploadedFile.url}`,
+              }
+            : candidatura
+        )
+      );
+
+      alert('CV aggiornato con successo!');
+      window.location.reload();
+    } else {
+      console.error('Nessun file nell\'upload response');
+      throw new Error('Upload fallito: nessun file restituito');
+    }
+  } catch (error) {
+    console.error('=== ERRORE UPLOAD ===');
+    console.error('Errore completo:', error);
+    console.error('Response error:', error.response);
+    
+    if (error.response) {
+      console.error('Status:', error.response.status);
+      console.error('Data:', error.response.data);
+      console.error('Headers:', error.response.headers);
+    }
+    
+    // Messaggio di errore più specifico
+    let errorMessage = 'Errore nell\'aggiornamento del CV.';
+    if (error.response) {
+      switch (error.response.status) {
+        case 404:
+          errorMessage = 'Risorsa non trovata. Verifica che la candidatura esista.';
+          break;
+        case 401:
+          errorMessage = 'Non autorizzato. Verifica il token di autenticazione.';
+          break;
+        case 403:
+          errorMessage = 'Permessi insufficienti.';
+          break;
+        case 413:
+          errorMessage = 'File troppo grande.';
+          break;
+        default:
+          errorMessage = `Errore del server: ${error.response.status}`;
+      }
+    }
+    
+    alert(errorMessage);
+  } finally {
+    setUploadingCv(null);
+  }
+};
+
+  // Funzione per gestire la selezione del file
+  const handleFileSelect = (candidaturaId, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Verifica il tipo di file
+      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Formato file non supportato. Carica un file PDF o Word.');
+        return;
+      }
+
+      // Verifica la dimensione del file (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        alert('Il file è troppo grande. Dimensione massima: 10MB.');
+        return;
+      }
+
+      handleCvUpload(candidaturaId, file);
+    }
+  };
+
+  // Funzione per verificare se è possibile modificare il CV
+  const canModifyCv = (stato) => {
+    return stato === 'inviata' || stato === 'in valutazione';
+  };
 
   // Funzione per ottenere la classe CSS in base allo stato
   const getStatusClass = (stato) => {
@@ -248,18 +391,46 @@ export default function CandidaturePage() {
                     {getStatusText(candidatura.stato)}
                   </span>
                 </p>
-                {candidatura.cvUrl && (
-                  <p>
-                    <strong>CV:</strong>{' '}
-                    <a
-                      href={candidatura.cvUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Visualizza CV
-                    </a>
-                  </p>
-                )}
+                
+                <div className="cv-section">
+                  <div className="cv-buttons-container">
+                    {candidatura.cvUrl && (
+                      <a
+                        href={candidatura.cvUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Visualizza CV
+                      </a>
+                    )}
+                    
+                    {canModifyCv(candidatura.stato) && (
+                      <>
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          onChange={(e) => handleFileSelect(candidatura.documentId, e)}
+                          style={{ display: 'none' }}
+                          id={`cv-upload-${candidatura.id}`}
+                          disabled={uploadingCv === candidatura.id}
+                        />
+                        <label
+                          htmlFor={`cv-upload-${candidatura.id}`}
+                          className={`cv-upload-button ${uploadingCv === candidatura.id ? 'uploading' : ''}`}
+                        >
+                          {uploadingCv === candidatura.id ? (
+                            <>
+                              <span className="upload-spinner"></span>
+                              Caricamento...
+                            </>
+                          ) : (
+                            'Modifica CV'
+                          )}
+                        </label>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {candidatura.feedback && (

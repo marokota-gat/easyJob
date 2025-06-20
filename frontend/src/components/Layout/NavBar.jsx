@@ -17,7 +17,6 @@ import axios from 'axios';
 // tutorial su come creare navbar in react
 
 export default function NavBar() {
-  const [choosePage, setChoosePage] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [userInfo, setUserInfo] = useState(null);
   const [role, setRole] = useState(null);
@@ -39,13 +38,11 @@ export default function NavBar() {
     items.push({
       label: 'Feed',
       to: '/dashboard/feed',
-      page: 0,
       show: true,
     });
     items.push({
       label: 'Offerte',
       to: '/dashboard/offerte',
-      page: 1,
       show: true,
     });
 
@@ -60,7 +57,6 @@ export default function NavBar() {
       items.push({
         label: 'Candidature',
         to: '/dashboard/candidature',
-        page: 2,
         show: true,
       });
     }
@@ -76,7 +72,6 @@ export default function NavBar() {
       items.push({
         label: 'vuota',
         to: '/dashboard',
-        page: 2,
         show: true,
       });
     }
@@ -86,7 +81,6 @@ export default function NavBar() {
       items.push({
         label: 'Candidature',
         to: '/dashboard/candidature',
-        page: 2,
         show: true,
       });
     }
@@ -134,161 +128,40 @@ export default function NavBar() {
           ) {
             const profilo = response.data.data[0];
             
-            // Controlliamo l'ID del profilo per riferimenti futuri
-            const profiloId = profilo.id;
-            
-            // Verifica se ci sono media collegati a questo profilo
-            try {
-              const mediaResponse = await axios.get(
-                `http://localhost:1337/api/upload/files?filters[related][0][id][$eq]=${profiloId}`,
-                {
-                  headers: {
-                    Authorization: `Bearer ${jwt}`,
-                  },
-                }
-              );
-            } catch (mediaError) {
-              // Ignorare errori
-            }
-            
             let imageUrl = null;
 
             // Per candidato, usa l'immagine profilo
             if (isCandidato) {
-              // Se immagineProfilo è null, prova a caricare direttamente tutte le immagini del profilo
-              if (!profilo.attributes.immagineProfilo || !profilo.attributes.immagineProfilo.data) {
-                try {
-                  // Invece di cercare solo in base al profilo, cerchiamo tutte le immagini disponibili
-                  const mediaResponse = await axios.get(
-                    `http://localhost:1337/api/upload/files`,
-                    {
-                      headers: {
-                        Authorization: `Bearer ${jwt}`,
-                      },
-                    }
-                  );
-                  
-                  if (mediaResponse.data && mediaResponse.data.length > 0) {
-                    // Cerca un'immagine con nome che potrebbe contenere il nome utente
-                    let userNameLower = nome.toLowerCase();
-                    let userFound = false;
-                    
-                    // Prima cerca immagini in formato PNG o JPG/JPEG, che sono più compatibili
-                    for (const mediaFile of mediaResponse.data) {
-                      // Controlla se il file è in formato PNG o JPG/JPEG
-                      if ((mediaFile.ext === '.png' || mediaFile.ext === '.jpg' || mediaFile.ext === '.jpeg') && 
-                          (mediaFile.name.toLowerCase().includes(userNameLower) || !userFound)) {
-                        imageUrl = `http://localhost:1337${mediaFile.url}`;
-                        userFound = true;
-                        break;
-                      }
-                    }
-                    
-                    // Se non troviamo nulla con formati compatibili, accetta qualsiasi formato
-                    if (!userFound && mediaResponse.data.length > 0) {
-                      for (const mediaFile of mediaResponse.data) {
-                        // Controlla se il nome del file contiene il nome dell'utente
-                        if (mediaFile.name.toLowerCase().includes(userNameLower)) {
-                          imageUrl = `http://localhost:1337${mediaFile.url}`;
-                          userFound = true;
-                          break;
-                        }
-                      }
-                      
-                      // Se ancora non troviamo nulla, usa la prima immagine
-                      if (!userFound && mediaResponse.data.length > 0) {
-                        // Cerca prima immagini in formati standard
-                        const standardFormatImage = mediaResponse.data.find(file => 
-                          file.ext === '.png' || file.ext === '.jpg' || file.ext === '.jpeg');
-                        
-                        if (standardFormatImage) {
-                          const mediaFile = standardFormatImage;
-                          imageUrl = `http://localhost:1337${mediaFile.url}`;
-                        } else {
-                          // Altrimenti usa la prima immagine disponibile
-                          const mediaFile = mediaResponse.data[0];
-                          imageUrl = `http://localhost:1337${mediaFile.url}`;
-                        }
-                      }
-                    }
-                  }
-                } catch (mediaError) {
-                  // Ignorare errori
-                }
-              } else if (
-                profilo.attributes.immagineProfilo &&
-                profilo.attributes.immagineProfilo.data
-              ) {
-                imageUrl = `http://localhost:1337${profilo.attributes.immagineProfilo.data.attributes.url}`;
+              // Gestisce sia la struttura vecchia che quella nuova per immagineProfilo
+              let candidatoImageUrl = null;
+              if (profilo.attributes.immagineProfilo?.data?.attributes?.url) {
+                // Struttura vecchia: { data: { attributes: { url: "..." } } }
+                candidatoImageUrl = profilo.attributes.immagineProfilo.data.attributes.url;
+              } else if (profilo.attributes.immagineProfilo?.url) {
+                // Struttura nuova: { url: "...", id: ..., etc }
+                candidatoImageUrl = profilo.attributes.immagineProfilo.url;
+              }
+              
+              if (candidatoImageUrl) {
+                imageUrl = `http://localhost:1337${candidatoImageUrl}`;
+
               }
             }
             // Per recruiter, usa il logo azienda
             else if (isRecruiter) {
-              // Se logoAzienda è null, prova a caricare direttamente tutte le immagini del profilo
-              if (!profilo.attributes.logoAzienda || !profilo.attributes.logoAzienda.data) {
-                try {
-                  // Invece di cercare solo in base al profilo, cerchiamo tutte le immagini disponibili
-                  const mediaResponse = await axios.get(
-                    `http://localhost:1337/api/upload/files`,
-                    {
-                      headers: {
-                        Authorization: `Bearer ${jwt}`,
-                      },
-                    }
-                  );
-                  
-                  if (mediaResponse.data && mediaResponse.data.length > 0) {
-                    // Cerca un'immagine con nome che potrebbe contenere il nome azienda
-                    let aziendaNameLower = nomeAzienda.toLowerCase();
-                    let logoFound = false;
-                    
-                    // Prima cerca immagini in formato PNG o JPG/JPEG, che sono più compatibili
-                    for (const mediaFile of mediaResponse.data) {
-                      // Controlla se il file è in formato PNG o JPG/JPEG e contiene il nome azienda
-                      if ((mediaFile.ext === '.png' || mediaFile.ext === '.jpg' || mediaFile.ext === '.jpeg') && 
-                          (mediaFile.name.toLowerCase().includes(aziendaNameLower) || !logoFound)) {
-                        imageUrl = `http://localhost:1337${mediaFile.url}`;
-                        logoFound = true;
-                        break;
-                      }
-                    }
-                    
-                    // Se non troviamo nulla con formati compatibili, accetta qualsiasi formato
-                    if (!logoFound && mediaResponse.data.length > 0) {
-                      for (const mediaFile of mediaResponse.data) {
-                        // Controlla se il nome del file contiene il nome dell'azienda
-                        if (mediaFile.name.toLowerCase().includes(aziendaNameLower)) {
-                          imageUrl = `http://localhost:1337${mediaFile.url}`;
-                          logoFound = true;
-                          break;
-                        }
-                      }
-                      
-                      // Se ancora non troviamo nulla, usa la prima immagine
-                      if (!logoFound && mediaResponse.data.length > 0) {
-                        // Cerca prima immagini in formati standard
-                        const standardFormatImage = mediaResponse.data.find(file => 
-                          file.ext === '.png' || file.ext === '.jpg' || file.ext === '.jpeg');
-                        
-                        if (standardFormatImage) {
-                          const mediaFile = standardFormatImage;
-                          imageUrl = `http://localhost:1337${mediaFile.url}`;
-                        } else {
-                          // Altrimenti usa la prima immagine disponibile
-                          const mediaFile = mediaResponse.data[0];
-                          imageUrl = `http://localhost:1337${mediaFile.url}`;
-                        }
-                      }
-                    }
-                  }
-                } catch (mediaError) {
-                  // Ignorare errori
-                }
-              } else if (
-                profilo.attributes.logoAzienda &&
-                profilo.attributes.logoAzienda.data
-              ) {
-                imageUrl = `http://localhost:1337${profilo.attributes.logoAzienda.data.attributes.url}`;
+              // Gestisce sia la struttura vecchia che quella nuova per logoAzienda
+              let recruiterImageUrl = null;
+              if (profilo.attributes.logoAzienda?.data?.attributes?.url) {
+                // Struttura vecchia: { data: { attributes: { url: "..." } } }
+                recruiterImageUrl = profilo.attributes.logoAzienda.data.attributes.url;
+              } else if (profilo.attributes.logoAzienda?.url) {
+                // Struttura nuova: { url: "...", id: ..., etc }
+                recruiterImageUrl = profilo.attributes.logoAzienda.url;
+              }
+              
+              if (recruiterImageUrl) {
+                imageUrl = `http://localhost:1337${recruiterImageUrl}`;
+
               }
             }
 
@@ -489,19 +362,7 @@ export default function NavBar() {
     }
   }, [apiCallFailed, profileImage, jwt, role, imageRetryCount, fetchProfileImage]);
 
-  // Aggiorniamo il tasto attivo in base al percorso corrente
-  useEffect(() => {
-    if (navItems.length > 0) {
-      const path = location.pathname;
-      // Trova l'indice del navItem che corrisponde al percorso corrente
-      const activeItemIndex = navItems.findIndex(
-        (item) => item.to === path
-      );
-      if (activeItemIndex !== -1) {
-        setChoosePage(navItems[activeItemIndex].page);
-      }
-    }
-  }, [location.pathname, navItems]);
+
 
   const handleLogout = () => {
     localStorage.clear();
@@ -537,6 +398,12 @@ export default function NavBar() {
     bell: '/Bell.svg',
   };
 
+  // Funzione per determinare se un percorso è attivo
+  const isActivePath = (itemPath) => {
+    const currentPath = location.pathname;
+    return currentPath === itemPath;
+  };
+
   return (
     <div className="header">
       <div className="container">
@@ -560,12 +427,7 @@ export default function NavBar() {
                       fontWeight="550"
                       backgroundColor="transparent"
                       textColor={
-                        choosePage === item.page
-                          ? '#FFFFFF'
-                          : '#9C9C9C'
-                      }
-                      onClick={() =>
-                        setChoosePage(item.page)
+                        isActivePath(item.to) ? '#FFFFFF' : '#9C9C9C'
                       }
                     />
                   </Link>

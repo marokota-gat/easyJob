@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 import FilterModal from '../components/Filter/FilterModal';
 
 export default function OffertePage() {
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
+  const [favoriteOffers, setFavoriteOffers] = useState([]); 
   const [searchTerm, setSearchTerm] = useState('');
   const [offers, setOffers] = useState([]);
   const [filteredOffers, setFilteredOffers] = useState([]);
@@ -646,36 +648,39 @@ export default function OffertePage() {
 
   // Funzione per gestire la ricerca con filtri attivi
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+  setSearchTerm(e.target.value);
 
-    // Se non ci sono filtri attivi, usa la logica originale
-    if (
-      !activeFilters.location &&
-      !activeFilters.workMode &&
-      !activeFilters.contractType
-    ) {
-      if (e.target.value.trim() === '') {
-        setFilteredOffers(baseOffers);
-      } else {
-        const filtered = baseOffers.filter(
-          (offer) =>
-            offer.title
-              .toLowerCase()
-              .includes(e.target.value.toLowerCase()) ||
-            offer.company
-              .toLowerCase()
-              .includes(e.target.value.toLowerCase()) ||
-            offer.description
-              .toLowerCase()
-              .includes(e.target.value.toLowerCase())
-        );
-        setFilteredOffers(filtered);
-      }
+  // Determina il set di offerte di partenza
+  const sourceOffers = showOnlyFavorites ? favoriteOffers : baseOffers;
+
+  // Se non ci sono filtri attivi, usa la logica di ricerca
+  if (
+    !activeFilters.location &&
+    !activeFilters.workMode &&
+    !activeFilters.contractType
+  ) {
+    if (e.target.value.trim() === '') {
+      setFilteredOffers(sourceOffers);
     } else {
-      // Se ci sono filtri attivi, riapplica tutti i filtri inclusa la nuova ricerca
-      applyFilters(activeFilters);
+      const filtered = sourceOffers.filter(
+        (offer) =>
+          offer.title
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase()) ||
+          offer.company
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase()) ||
+          offer.description
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase())
+      );
+      setFilteredOffers(filtered);
     }
-  };
+  } else {
+    // Se ci sono filtri attivi, riapplica tutti i filtri inclusa la nuova ricerca
+    applyFilters(activeFilters);
+  }
+};
 
   // Funzione per applicare i filtri
   const handleFilter = () => {
@@ -685,78 +690,226 @@ export default function OffertePage() {
 
   // Aggiungi questa nuova funzione per applicare i filtri
   const applyFilters = (filters) => {
-    setActiveFilters(filters);
+  setActiveFilters(filters);
 
-    let filtered = [...baseOffers];
+  // Determina il set di offerte di partenza - aggiorna i preferiti prima
+  let sourceOffers;
+  if (showOnlyFavorites) {
+    const favoriteIds = loadFavorites();
+    sourceOffers = baseOffers.filter(offer => favoriteIds.includes(offer.id));
+  } else {
+    sourceOffers = baseOffers;
+  }
+  
+  let filtered = [...sourceOffers];
 
-    // Applica prima i filtri
-    if (filters.location && filters.location !== '') {
-      filtered = filtered.filter((offer) =>
-        offer.location
+  // Applica i filtri come prima
+  if (filters.location && filters.location !== '') {
+    filtered = filtered.filter((offer) =>
+      offer.location
+        .toLowerCase()
+        .includes(filters.location.toLowerCase())
+    );
+  }
+
+  if (filters.workMode && filters.workMode !== '') {
+    filtered = filtered.filter((offer) => {
+      const description = offer.description.toLowerCase();
+      const location = offer.location.toLowerCase();
+
+      switch (filters.workMode) {
+        case 'remoto':
+          return (
+            description.includes('remoto') ||
+            description.includes('remote') ||
+            location.includes('remoto')
+          );
+        case 'ufficio':
+          return (
+            !description.includes('remoto') &&
+            !description.includes('remote') &&
+            !location.includes('remoto')
+          );
+        case 'ibrido':
+          return (
+            description.includes('ibrido') ||
+            description.includes('hybrid') ||
+            description.includes('flessibile')
+          );
+        default:
+          return true;
+      }
+    });
+  }
+
+  if (filters.contractType && filters.contractType !== '') {
+    filtered = filtered.filter((offer) =>
+      offer.jobType
+        .toLowerCase()
+        .includes(filters.contractType.toLowerCase())
+    );
+  }
+
+  // Applica la ricerca testuale se presente
+  if (searchTerm.trim() !== '') {
+    filtered = filtered.filter(
+      (offer) =>
+        offer.title
           .toLowerCase()
-          .includes(filters.location.toLowerCase())
-      );
-    }
+          .includes(searchTerm.toLowerCase()) ||
+        offer.company
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        offer.description
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+    );
+  }
 
-    if (filters.workMode && filters.workMode !== '') {
-      filtered = filtered.filter((offer) => {
-        const description = offer.description.toLowerCase();
-        const location = offer.location.toLowerCase();
+  setFilteredOffers(filtered);
+};
 
-        switch (filters.workMode) {
-          case 'remoto':
-            return (
-              description.includes('remoto') ||
-              description.includes('remote') ||
-              location.includes('remoto')
-            );
-          case 'ufficio':
-            return (
-              !description.includes('remoto') &&
-              !description.includes('remote') &&
-              !location.includes('remoto')
-            );
-          case 'ibrido':
-            return (
-              description.includes('ibrido') ||
-              description.includes('hybrid') ||
-              description.includes('flessibile')
-            );
-          default:
-            return true;
-        }
-      });
-    }
+// Funzione per caricare i preferiti dal localStorage
+const loadFavorites = useCallback(() => {
+  try {
+    const favorites = localStorage.getItem('favorites');
+    return JSON.parse(favorites);
+  } catch (error) {
+    console.error('Errore nel caricamento dei preferiti:', error);
+    return [];
+  }
+}, []);
 
+// Funzione per aggiornare la lista dei preferiti
+const updateFavoritesList = useCallback(() => {
+  const favoriteIds = loadFavorites();
+  const favoriteOffersList = filteredOffers.filter(offer => 
+    favoriteIds?.includes(offer.id)
+  );
+  setFavoriteOffers(favoriteOffersList);
+}, [filteredOffers, loadFavorites]);
+
+// Funzione per gestire il toggle dei preferiti
+const handleToggleFavorites = () => {
+  const newShowOnlyFavorites = !showOnlyFavorites;
+  setShowOnlyFavorites(newShowOnlyFavorites);
+  
+  if (newShowOnlyFavorites) {
+    // Prima aggiorna la lista dei preferiti, poi mostrala
+    const favoriteIds = loadFavorites();
+    const favoriteOffersList = baseOffers.filter(offer => 
+      favoriteIds.includes(offer.id)
+    );
+    setFavoriteOffers(favoriteOffersList);
+    setFilteredOffers(favoriteOffersList);
+    console.log("Modalità preferiti attivata, offerte mostrate:", favoriteOffersList.length);
+  } else {
+    // Mostra tutte le offerte con i filtri attuali
     if (
-      filters.contractType &&
-      filters.contractType !== ''
+      !activeFilters.location &&
+      !activeFilters.workMode &&
+      !activeFilters.contractType &&
+      searchTerm.trim() === ''
     ) {
-      filtered = filtered.filter((offer) =>
-        offer.jobType
-          .toLowerCase()
-          .includes(filters.contractType.toLowerCase())
-      );
+      setFilteredOffers(baseOffers);
+    } else {
+      applyFilters(activeFilters);
     }
+    console.log("Modalità preferiti disattivata, mostrate tutte le offerte");
+  }
+  
+  // Deseleziona l'offerta corrente quando si cambia modalità
+  setSelectedOffer(null);
+};
 
-    // Poi applica la ricerca testuale se presente
-    if (searchTerm.trim() !== '') {
-      filtered = filtered.filter(
-        (offer) =>
-          offer.title
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          offer.company
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
-          offer.description
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())
-      );
-    }
+const forceUpdateFavorites = () => {
+  console.log("Forzato aggiornamento preferiti");
+  updateFavoritesList();
+  
+  // Se siamo in modalità preferiti, aggiorna anche la visualizzazione
+  if (showOnlyFavorites) {
+    const favoriteIds = loadFavorites();
+    const favoriteOffersList = baseOffers.filter(offer => 
+      favoriteIds.includes(offer.id)
+    );
+    setFilteredOffers(favoriteOffersList);
+  }
+};
 
-    setFilteredOffers(filtered);
+useEffect(() => {
+  const handleWindowFocus = () => {
+    console.log("Finestra tornata in focus, aggiornamento preferiti...");
+    forceUpdateFavorites();
   };
+
+  window.addEventListener('focus', handleWindowFocus);
+  
+  return () => {
+    window.removeEventListener('focus', handleWindowFocus);
+  };
+}, []);
+
+// useEffect per aggiornare i preferiti quando cambiano le offerte
+useEffect(() => {
+  updateFavoritesList();
+}, [offers, updateFavoritesList]);
+
+// useEffect per ascoltare i cambiamenti nel localStorage
+useEffect(() => {
+  const handleStorageChange = (e) => {
+    // Aggiorna solo se il cambiamento riguarda i preferiti
+    if (!e || e.key === 'favorites' || e.key === null) {
+      console.log("Cambiamento nel localStorage rilevato, aggiornamento preferiti...");
+      updateFavoritesList();
+    }
+  };
+
+  const handleCustomFavoritesChange = () => {
+    console.log("Evento personalizzato preferiti ricevuto");
+    updateFavoritesList();
+  };
+
+  // Ascolta i cambiamenti nel localStorage da altre parti dell'app
+  window.addEventListener('storage', handleStorageChange);
+  
+  // Ascolta un evento personalizzato per i cambiamenti nel localStorage dalla stessa finestra
+  window.addEventListener('favoritesChanged', handleCustomFavoritesChange);
+
+  // Forza un aggiornamento iniziale
+  updateFavoritesList();
+
+  return () => {
+    window.removeEventListener('storage', handleStorageChange);
+    window.removeEventListener('favoritesChanged', handleCustomFavoritesChange);
+  };
+}, [updateFavoritesList]);
+
+useEffect(() => {
+  // Controlla i preferiti ogni 2 secondi solo se la modalità preferiti è attiva
+  let favoritesInterval;
+  
+  if (showOnlyFavorites) {
+    favoritesInterval = setInterval(() => {
+      const currentFavoriteIds = loadFavorites();
+      const currentFavoriteOfferIds = favoriteOffers.map(offer => offer.id);
+      
+      // Controlla se ci sono differenze
+      const hasChanges = currentFavoriteIds.length !== currentFavoriteOfferIds.length ||
+        currentFavoriteIds.some(id => !currentFavoriteOfferIds.includes(id));
+      
+      if (hasChanges) {
+        console.log("Differenze rilevate nei preferiti, aggiornamento...");
+        updateFavoritesList();
+      }
+    }, 2000);
+  }
+
+  return () => {
+    if (favoritesInterval) {
+      clearInterval(favoritesInterval);
+    }
+  };
+}, [showOnlyFavorites, favoriteOffers, loadFavorites, updateFavoritesList]);
 
   // Aggiungi questa funzione per chiudere il modal
   const handleCloseFilterModal = () => {
@@ -833,16 +986,16 @@ export default function OffertePage() {
             }
           />
           <Button
-            text="Preferite"
+            text={showOnlyFavorites ? "Tutte" : "Preferite"}
             width={styles.button.width}
             height={styles.button.height}
             borderRadius={styles.button.borderRadius}
             border={styles.button.border}
             fontSize={styles.button.fontSize}
-            backgroundColor={styles.button.backgroundColor}
-            textColor={styles.button.textColor}
+            backgroundColor={showOnlyFavorites ? "#1e3a8a" : styles.button.backgroundColor}
+            textColor={showOnlyFavorites ? "white" : styles.button.textColor}
             /* VA INSERITA LA LOGICA MOSTRARE I PREFERITI*/
-            onClick={null}
+            onClick={handleToggleFavorites}
           />
           {(activeFilters.location ||
             activeFilters.workMode ||
@@ -988,7 +1141,4 @@ export default function OffertePage() {
     return parseInt(offer.userId) === parseInt(user.id);
   }
 
-  // Funzione per eliminare un'offerta
-
-  // Funzione per inviare una candidatura
 }
