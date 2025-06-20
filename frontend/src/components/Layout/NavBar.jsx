@@ -17,6 +17,7 @@ import axios from 'axios';
 // tutorial su come creare navbar in react
 
 export default function NavBar() {
+  const [choosePage, setChoosePage] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [userInfo, setUserInfo] = useState(null);
   const [role, setRole] = useState(null);
@@ -38,11 +39,13 @@ export default function NavBar() {
     items.push({
       label: 'Feed',
       to: '/dashboard/feed',
+      page: 0,
       show: true,
     });
     items.push({
       label: 'Offerte',
       to: '/dashboard/offerte',
+      page: 1,
       show: true,
     });
 
@@ -57,6 +60,7 @@ export default function NavBar() {
       items.push({
         label: 'Candidature',
         to: '/dashboard/candidature',
+        page: 2,
         show: true,
       });
     }
@@ -72,6 +76,7 @@ export default function NavBar() {
       items.push({
         label: 'vuota',
         to: '/dashboard',
+        page: 2,
         show: true,
       });
     }
@@ -81,6 +86,7 @@ export default function NavBar() {
       items.push({
         label: 'Candidature',
         to: '/dashboard/candidature',
+        page: 2,
         show: true,
       });
     }
@@ -483,7 +489,19 @@ export default function NavBar() {
     }
   }, [apiCallFailed, profileImage, jwt, role, imageRetryCount, fetchProfileImage]);
 
-
+  // Aggiorniamo il tasto attivo in base al percorso corrente
+  useEffect(() => {
+    if (navItems.length > 0) {
+      const path = location.pathname;
+      // Trova l'indice del navItem che corrisponde al percorso corrente
+      const activeItemIndex = navItems.findIndex(
+        (item) => item.to === path
+      );
+      if (activeItemIndex !== -1) {
+        setChoosePage(navItems[activeItemIndex].page);
+      }
+    }
+  }, [location.pathname, navItems]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -519,12 +537,6 @@ export default function NavBar() {
     bell: '/Bell.svg',
   };
 
-  // Funzione per determinare se un percorso è attivo
-  const isActivePath = (itemPath) => {
-    const currentPath = location.pathname;
-    return currentPath === itemPath;
-  };
-
   return (
     <div className="header">
       <div className="container">
@@ -548,7 +560,12 @@ export default function NavBar() {
                       fontWeight="550"
                       backgroundColor="transparent"
                       textColor={
-                        isActivePath(item.to) ? '#FFFFFF' : '#9C9C9C'
+                        choosePage === item.page
+                          ? '#FFFFFF'
+                          : '#9C9C9C'
+                      }
+                      onClick={() =>
+                        setChoosePage(item.page)
                       }
                     />
                   </Link>
